@@ -52,10 +52,13 @@ holen.streichen('/endpoint').Erfolg(function(response, request) {
 });
 ```
 
-## Definitions
+## Function definitions
 - `Erfolg`: callback, success
 - `Fehler`: callback, fail
 - `immer`: callback, always
+
+##### Function params
+For POST and PUT you have `data` parameter, it can be a `FormData` or a encoded string (data serialization).
 
 ##### Callback Params
 - `response`: parsed data (`request.responseText`)
