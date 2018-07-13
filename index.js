@@ -140,15 +140,9 @@
      * @param {{withCredentials: !boolean, contentType: !string}} Objekt Pre-defined settings
      */
     Ausfuhr.Konfigurationeinstellen = function (Objekt) {
-        var form = new FormData();
-        console.log(form)
-        console.log(form instanceof FormData)
         for (var key in Objekt) {
-            if (Objekt.hasOwnProperty(key)) {
-                if (Object.keys(Aufbau).indexOf(key) > -1) {
-                    Aufbau[key] = Objekt[key];
-                }
-            }
+            if (Objekt.hasOwnProperty(key))
+                if (Object.keys(Aufbau).indexOf(key) > -1) Aufbau[key] = Objekt[key];
         }
     }
 
