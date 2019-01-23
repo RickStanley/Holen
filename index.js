@@ -17,6 +17,7 @@
      * @typedef {Object} Aufbau
      * @property {string} [contentType] Content type of the request
      * @property {boolean} [withCredentials] Should send request with credentials (cookies, or whatever)
+     * @property {boolean} [xRequestedWith] Should send request with `X-Requested-With` header
      */
 
     // Exports
@@ -29,6 +30,7 @@
     let Aufbau = {
         contentType: '',
         withCredentials: false,
+        xRequestedWith: true
     };
 
     // Parse
@@ -76,7 +78,7 @@
 
         anfordern.open(typ, url, true);
         anfordern.withCredentials = AktuelleEinstellungen.withCredentials;
-        anfordern.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        if (AktuelleEinstellungen.xRequestedWith) anfordern.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         if (Daten) {
             if (!(Daten instanceof FormData) && typeof Daten === 'object') Daten = JSON.stringify(Daten), anfordern.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
             else if (!(Daten instanceof FormData) && !AktuelleEinstellungen.contentType) anfordern.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
