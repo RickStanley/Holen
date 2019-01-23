@@ -1,4 +1,4 @@
-/*! holen v1.0.0 | 2018 | */
+/*! holen v1.0.1 | 2019 | */
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         define(factory);
@@ -13,14 +13,22 @@
         @typedef zergliederte
         @type {[JSON | string, XMLHttpRequest]}
     */
+    /**
+     * @typedef {Object} Aufbau
+     * @property {string} [contentType] Content type of the request
+     * @property {boolean} [withCredentials] Should send request with credentials (cookies, or whatever)
+     */
 
     // Exports
-    var Ausfuhr = {};
+    let Ausfuhr = {};
 
     // config
-    var Aufbau = {
+    /**
+     * @type {Aufbau}
+     */
+    let Aufbau = {
         contentType: '',
-        withCredentials: false
+        withCredentials: false,
     };
 
     // Parse
@@ -28,9 +36,9 @@
      * @param {XMLHttpRequest} anf The Request
      * @returns {zergliederte} Parsed content
      */
-    var zergliedern = function (anf) {
+    const zergliedern = function (anf) {
         // Result
-        var Ergebnis;
+        let Ergebnis;
         try {
             Ergebnis = JSON.parse(anf.responseText);
         } catch (e) {
@@ -42,14 +50,16 @@
     /**
      * @param {string} typ Request type
      * @param {string} url Request source
-     * @param {string | FormData} Daten FormData or serialized data
+     * @param {string | FormData} [Daten] FormData or serialized data
+     * @param {Aufbau} [spezifischeEinstellungen] Custom settings
      */
-    var xhr = function (typ, url, Daten) {
+    const xhr = function (typ, url, Daten, spezifischeEinstellungen) {
+        const AktuelleEinstellungen = spezifischeEinstellungen ? spezifischeEinstellungen : Aufbau;
         // Methods
         // -> Success
         // -> error
         // -> always
-        var Methoden = {
+        const Methoden = {
             Erfolg: function () {},
             Fehler: function () {},
             immer: function () {}
@@ -57,25 +67,27 @@
         /**
          * @type {XMLHttpRequest}
          */
-        var XHR = root.XMLHttpRequest || ActiveXObject;
+        const XHR = root.XMLHttpRequest || ActiveXObject;
         // Request
         /**
          * @type {XMLHttpRequest}
          */
-        var anfordern = new XHR('MSXML2.XMLHTTP.3.0');
+        const anfordern = new XHR('MSXML2.XMLHTTP.3.0');
 
         anfordern.open(typ, url, true);
-        anfordern.withCredentials = Aufbau.withCredentials;
+        anfordern.withCredentials = AktuelleEinstellungen.withCredentials;
+        anfordern.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         if (Daten) {
-            anfordern.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-            if (!(Daten instanceof FormData) && !Aufbau.contentType) anfordern.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            if (!(Daten instanceof FormData) && typeof Daten === 'object') Daten = JSON.stringify(Daten), anfordern.setRequestHeader('Content-Type', 'application/json;charset=utf-8');
+            else if (!(Daten instanceof FormData) && !AktuelleEinstellungen.contentType) anfordern.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            if (AktuelleEinstellungen.contentType) anfordern.setRequestHeader('Content-Type', AktuelleEinstellungen.contentType);
         }
         anfordern.onreadystatechange = function () {
             // Request
             /**
              * @type {zergliederte}
              */
-            var anf;
+            let anf;
             if (anfordern.readyState === 4) {
                 anf = zergliedern(anfordern);
                 if (anfordern.status >= 200 && anfordern.status < 300) {
@@ -88,7 +100,7 @@
         };
         anfordern.send(Daten);
 
-        var holenXHR = {
+        const holenXHR = {
             Erfolg: function (callback) {
                 Methoden.Erfolg = callback;
                 return holenXHR;
@@ -116,17 +128,19 @@
     /**
      * @param {string} url Source
      * @param {string | FormData} Daten Data request
+     * @param {Aufbau} [Einstellungen] Configurations for this request
      */
-    Ausfuhr.stellen = function (url, Daten) {
-        return xhr('PUT', url, Daten);
+    Ausfuhr.stellen = function (url, Daten, Einstellungen) {
+        return xhr('PUT', url, Daten, Einstellungen ? Ausfuhr.Konfigurationeinstellen(Einstellungen,  true) : undefined);
     };
 
     /**
      * @param {string} url Source
      * @param {string | FormData} Daten Data request
+     * @param {Aufbau} [Einstellungen] Configurations for this request
      */
-    Ausfuhr.posten = function (url, Daten) {
-        return xhr('POST', url, Daten);
+    Ausfuhr.posten = function (url, Daten, Einstellungen) {
+        return xhr('POST', url, Daten, Einstellungen ? Ausfuhr.Konfigurationeinstellen(Einstellungen,  true) : undefined);
     };
 
     /**
@@ -137,13 +151,16 @@
     };
 
     /**
-     * @param {{withCredentials: !boolean, contentType: !string}} Objekt Pre-defined settings
+     * @param {Aufbau} benutzerdefinierteEinstellungen Pre-defined settings
+     * @returns {undefined | Aufbau}
      */
-    Ausfuhr.Konfigurationeinstellen = function (Objekt) {
-        for (var key in Objekt) {
-            if (Objekt.hasOwnProperty(key))
-                if (Object.keys(Aufbau).indexOf(key) > -1) Aufbau[key] = Objekt[key];
+    Ausfuhr.Konfigurationeinstellen = function (benutzerdefinierteEinstellungen, klonen) {
+        for (const key in benutzerdefinierteEinstellungen) {
+            if (benutzerdefinierteEinstellungen.hasOwnProperty(key))
+                if ((Object.keys(Aufbau).indexOf(key) > -1) && !klonen) Aufbau[key] = benutzerdefinierteEinstellungen[key];
+                else delete benutzerdefinierteEinstellungen[key];
         }
+        if (klonen) return benutzerdefinierteEinstellungen;
     }
 
     return Ausfuhr;

@@ -23,7 +23,7 @@ holen.bekommen('/endpoint').Erfolg(function(response, request) {
 ```
 #### PUT
 ```javascript
-holen.stellen('/endpoint', data).Erfolg(function(response, request) {
+holen.stellen('/endpoint', data, customConfig).Erfolg(function(response, request) {
 
 }).Fehler(function(response, request) {
 
@@ -33,7 +33,7 @@ holen.stellen('/endpoint', data).Erfolg(function(response, request) {
 ```
 #### POST
 ```javascript
-holen.posten('/endpoint', data).Erfolg(function(response, request) {
+holen.posten('/endpoint', data, customConfig).Erfolg(function(response, request) {
 
 }).Fehler(function(response, request) {
 
@@ -58,8 +58,8 @@ holen.streichen('/endpoint').Erfolg(function(response, request) {
 - `immer`: callback, always
 
 ##### Function params
-For POST and PUT you have `data` parameter, it can be a `FormData` or a encoded string (data serialization).
+For POST and PUT you have `data` parameter, it can be a `FormData`, a encoded string (data serialization `foo=bar&morpheus=leader`) or an JSON-valid object, and `customConfig` to override the global configuration for this specific call.
 
 ##### Callback Params
-- `response`: parsed data (`request.responseText`)
+- `response`: parsed data or text (`request.responseText`)
 - `request`: the request itself (`XMLHttpRequest`)
