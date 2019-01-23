@@ -159,7 +159,9 @@
     Ausfuhr.Konfigurationeinstellen = function (benutzerdefinierteEinstellungen, klonen) {
         for (const key in benutzerdefinierteEinstellungen) {
             if (benutzerdefinierteEinstellungen.hasOwnProperty(key))
-                if ((Object.keys(Aufbau).indexOf(key) > -1) && !klonen) Aufbau[key] = benutzerdefinierteEinstellungen[key];
+                if ((Object.keys(Aufbau).indexOf(key) > -1)) {
+                    if (!klonen) Aufbau[key] = benutzerdefinierteEinstellungen[key];
+                }
                 else delete benutzerdefinierteEinstellungen[key];
         }
         if (klonen) return benutzerdefinierteEinstellungen;
