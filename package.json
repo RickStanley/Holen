@@ -10,7 +10,8 @@
     "rollup-plugin-node-resolve": "^5.2.0"
   },
   "scripts": {
-    "make": "rollup -c rollup.config.js"
+    "make": "rollup -c rollup.config.js",
+    "roll": "rollup -c rollup.config.js -f es -o ./holen.mjs"
   },
   "repository": {
     "type": "git",
