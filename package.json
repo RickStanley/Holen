@@ -1,0 +1,30 @@
+{
+  "name": "holen",
+  "version": "2.1.0",
+  "description": "Standalone AJAX library for modern browsers. Inspired by Angular's `$http` method.",
+  "main": "holen.js",
+  "dependencies": {},
+  "devDependencies": {
+    "rollup": "^1.20.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0"
+  },
+  "scripts": {
+    "make": "rollup -c rollup.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickStanley/Holen.git"
+  },
+  "keywords": [
+    "ajax",
+    "xhttprequest",
+    "german"
+  ],
+  "author": "Rick Stanley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RickStanley/Holen/issues"
+  },
+  "homepage": "https://github.com/RickStanley/Holen#readme"
+}
