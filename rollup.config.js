@@ -4,7 +4,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 export default {
 	input: 'src/holen.js',
 	output: {
-		file: 'dist/holen.js',
+		file: 'holen.js',
 		format: 'umd',
 		name: 'holen'
 	},

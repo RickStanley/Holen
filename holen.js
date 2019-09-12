@@ -11,6 +11,19 @@
 	 */
 
 	/**
+	 * @callback Fortschritt
+	 * @param {ProgressEvent<EventTarget>} ev Progress
+	 */
+
+	/**
+	 * @typedef {Object} Aufbau
+	 * @property {string} [contentType] Content type of the request
+	 * @property {boolean} [withCredentials] Should send request with credentials (cookies, or whatever)
+	 * @property {boolean} [xRequestedWith] Should send request with `X-Requested-With` header
+	 * @property {Fortschritt} [onProgress] On progress callback
+	 */
+
+	/**
 		@typedef zergliederte
 		@type {[JSON | string, XMLHttpRequest]}
 	*/
@@ -82,6 +95,7 @@
 				Methoden.immer.apply(Methoden, anf);
 			}
 		};
+		if (anfordern.upload && AktuelleEinstellungen.onProgress) anfordern.upload.onprogress = AktuelleEinstellungen.onProgress;
 		anfordern.send(Daten);
 
 		const holenXHR = {
@@ -106,17 +120,24 @@
 	}
 
 	/**
+	 * @callback Fortschritt
+	 * @param {ProgressEvent<EventTarget>} ev Progress
+	 */
+
+	/**
 	 * @typedef {Object} Aufbau
 	 * @property {string} [contentType] Content type of the request
 	 * @property {boolean} [withCredentials] Should send request with credentials (cookies, or whatever)
 	 * @property {boolean} [xRequestedWith] Should send request with `X-Requested-With` header
+	 * @property {Fortschritt} [onProgress] On progress callback
 	 */
 
 	/**@var {Aufbau} */
 	let Aufbau = {
 		contentType: '',
 		withCredentials: false,
-		xRequestedWith: true
+		xRequestedWith: true,
+		onProgress: null
 	};
 
 	class Holen {
