@@ -6,12 +6,14 @@ Yep, another standalone AJAX library for modern browsers... AUF DEUTSCH! Inspire
 holen.Konfigurationeinstellen({
     contentType: '',
     withCredentials: false,
-	xRequestedWith: true
+    xRequestedWith: true,
+    onProgress: null
 });
 ```
 - `contentType`: string, indicates the type of the data. (Default: `'application/x-www-form-urlencoded'`)
 - `withCredentials`: boolean, indicates whether or not cross-site Access-Control requests should be made using credentials such as cookies or authorization headers.
 - `xRequestedWith`: boolean, should flag that this call is ajax?
+- `onProgress`: if it's uploading something, you can use progress callback.
 
 ## API
 
