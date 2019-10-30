@@ -2,7 +2,7 @@
   "name": "holen",
   "version": "2.1.0",
   "description": "Standalone AJAX library for modern browsers. Inspired by Angular's `$http` method.",
-  "main": "holen.js",
+  "main": "holen.mjs",
   "dependencies": {},
   "devDependencies": {
     "rollup": "^1.20.3",
@@ -29,7 +29,8 @@
   },
   "homepage": "https://github.com/RickStanley/Holen#readme",
   "files": [
-    "src/holen.js",
+    "src/holen.mjs",
+    "holen.mjs",
     "holen.js"
   ]
 }
